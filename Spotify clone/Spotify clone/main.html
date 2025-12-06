@@ -1,1 +1,369 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TuneHub - Where words fail, music speaks</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #000000 0%,
+          #1a1a1a 60%,
+          #1a3a2a 85%,
+          #0a2015 100%
+        );
+        color: #fff;
+        min-height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Perspective Grid background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(0deg, rgba(100, 180, 100, 0.12) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(100, 180, 100, 0.12) 1px, transparent 1px);
+        background-size: 50px 50px;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        transform: perspective(1000px) rotateX(75deg) rotateY(0deg);
+        transform-origin: center 30%;
+      }
+
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Navigation */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2.5rem 4rem;
+        border-bottom: 1px solid rgba(100, 180, 100, 0.1);
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+      }
+
+      .logo-icon {
+        width: 60px;
+        height: 50px;
+        background: #5a7d5f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .logo-icon svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .logo-text {
+        font-size: 1.4rem;
+        letter-spacing: 0.25em;
+        font-weight: 400;
+        color: #64d466;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 3.5rem;
+        list-style: none;
+      }
+
+      .nav-menu a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+        font-weight: 300;
+        transition: color 0.3s;
+      }
+
+      .nav-menu a:hover {
+        color: #64d466;
+      }
+
+      .signup-btn {
+        background: #64d466;
+        color: #000;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .signup-btn:hover {
+        background: #7dd97d;
+        box-shadow: 0 8px 25px rgba(100, 212, 102, 0.4);
+      }
+
+      /* Hero Section */
+      .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 4rem;
+      }
+
+      .hero-text {
+        max-width: 900px;
+      }
+
+      .main-quote {
+        font-size: 4.5rem;
+        font-weight: 300;
+        line-height: 1.15;
+        margin-bottom: 3rem;
+        letter-spacing: 0.01em;
+      }
+
+      .sub-quote {
+        font-size: 1.35rem;
+        font-weight: 300;
+        line-height: 1.6;
+        color: #9ab89a;
+        margin-bottom: 4rem;
+        max-width: 500px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 2.5rem 4rem;
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+        border-top: 1px solid rgba(100, 180, 100, 0.1);
+      }
+
+      .social-icons {
+        display: flex;
+        gap: 1.5rem;
+        list-style: none;
+      }
+
+      .social-icons a {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .social-icons a.twitter {
+        color: #64d466;
+      }
+
+      .social-icons a.facebook {
+        background: #64d466;
+        color: #000;
+        border-radius: 50%;
+      }
+
+      .social-icons a.instagram {
+        background: #64d466;
+        color: #000;
+        border-radius: 8px;
+      }
+
+      .social-icons a:hover {
+        transform: scale(1.1);
+      }
+
+      /* Positioned Listen Button */
+      .listen-button {
+        position: fixed;
+        bottom: 4rem;
+        right: 4rem;
+        background: linear-gradient(135deg, #64d466, #50c957);
+        color: #000;
+        border: none;
+        padding: 1.1rem 2.8rem;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(100, 212, 102, 0.3);
+        z-index: 10;
+      }
+
+      .listen-button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(100, 212, 102, 0.5);
+      }
+
+      .listen-button:active {
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 1024px) {
+        header {
+          padding: 2rem 2.5rem;
+        }
+
+        .nav-menu {
+          gap: 2rem;
+        }
+
+        .hero {
+          padding: 0 2.5rem;
+        }
+
+        .main-quote {
+          font-size: 2.8rem;
+        }
+
+        footer {
+          padding: 2rem 2.5rem;
+        }
+
+        .listen-button {
+          bottom: 2.5rem;
+          right: 2.5rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          gap: 2rem;
+          padding: 1.5rem;
+        }
+
+        .nav-menu {
+          gap: 1.5rem;
+          font-size: 0.9rem;
+        }
+
+        .hero {
+          padding: 1.5rem;
+        }
+
+        .main-quote {
+          font-size: 1.8rem;
+        }
+
+        .listen-button {
+          bottom: 1.5rem;
+          right: 1.5rem;
+          padding: 0.9rem 2rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Header/Navigation -->
+      <header>
+        <div class="logo-section">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="8"
+                y="8"
+                width="8"
+                height="8"
+                fill="white"
+                transform="rotate(45 12 12)"
+              />
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span style="color: #64d466">T</span
+            ><span style="color: #fff">U</span
+            ><span style="color: #64d466">N</span
+            ><span style="color: #fff">EH</span
+            ><span style="color: #64d466">U</span
+            ><span style="color: #fff">B</span>
+          </div>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#discover">Discover</a></li>
+          <li><a href="#library">Library</a></li>
+        </ul>
+
+        <button class="signup-btn">Signup</button>
+      </header>
+
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1 class="main-quote">"Where words fail, music speaks."</h1>
+          <p class="sub-quote">
+            "One good thing about music, when it hits you, you feel no pain."
+          </p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+        <ul class="social-icons">
+          <li><a href="#" title="Twitter" class="twitter">𝕏</a></li>
+          <li><a href="#" title="Facebook" class="facebook">f</a></li>
+          <li>
+            <a href="#" title="Instagram" class="instagram"
+              ><svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path
+                  d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                ></path>
+                <circle cx="17.5" cy="6.5" r="1.5"></circle></svg
+            ></a>
+          </li>
+        </ul>
+      </footer>
+
+      <!-- Listen Button -->
+      <button class="listen-button">Listen</button>
+    </div>
+  </body>
+</html>
 
